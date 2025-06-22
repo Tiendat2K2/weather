@@ -1,38 +1,70 @@
-.App {
+body {
+  margin: 0;
+  padding: 0;
+  font-family: sans-serif;
+}
+
+.app {
   text-align: center;
-}
-
-.App-logo {
-  height: 40vmin;
-  pointer-events: none;
-}
-
-@media (prefers-reduced-motion: no-preference) {
-  .App-logo {
-    animation: App-logo-spin infinite 20s linear;
-  }
-}
-
-.App-header {
-  background-color: #282c34;
+  padding: 30px;
   min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  font-size: calc(10px + 2vmin);
-  color: white;
+  transition: background 1s ease-in-out;
+  color: #fff;
 }
 
-.App-link {
-  color: #61dafb;
+/* Hiệu ứng theo thời tiết */
+.sunny {
+  background: linear-gradient(to top, #fbc2eb, #a6c1ee);
+  animation: sunnyPulse 10s infinite;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+@keyframes sunnyPulse {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+
+.rainy {
+  background: linear-gradient(to bottom, #667db6, #0082c8, #0082c8, #667db6);
+  background-size: 200% 200%;
+  animation: rainMove 5s infinite linear;
+}
+
+@keyframes rainMove {
+  0% { background-position: 0 0; }
+  100% { background-position: 100% 100%; }
+}
+
+.cloudy {
+  background: linear-gradient(to top, #d7d2cc, #304352);
+}
+
+.stormy {
+  background: linear-gradient(to top, #232526, #414345);
+}
+
+.weather-display {
+  margin-top: 20px;
+  font-size: 18px;
+  background-color: rgba(255, 255, 255, 0.2);
+  padding: 20px;
+  border-radius: 12px;
+  display: inline-block;
+  color: #fff;
+}
+
+input {
+  padding: 10px;
+  width: 200px;
+  margin-right: 10px;
+  border-radius: 8px;
+  border: none;
+}
+
+button {
+  padding: 10px 20px;
+  border: none;
+  background-color: #ffffff80;
+  color: #000;
+  border-radius: 8px;
+  cursor: pointer;
 }
