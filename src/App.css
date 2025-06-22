@@ -68,3 +68,7 @@ button {
   border-radius: 8px;
   cursor: pointer;
 }
+.notfound {
+  background: linear-gradient(to top, #ff4e50, #f9d423); /* đỏ cam cảnh báo */
+  color: #000;
+}
