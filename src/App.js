@@ -1,11 +1,11 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
-import WeatherAnimation from "./WeatherAnimation "; // Import animation component
+import WeatherAnimation from "./WeatherAnimation ";
+import GoogleAd from "./GoogleAd"; // 👈 Import component quảng cáo
 
 const apiKey = "9db1211cb9e5a3330940ebd56beb4698";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-const geoApiUrl = "https://api.openweathermap.org/geo/1.0/direct";
 
 function App() {
   const [city, setCity] = useState("Hanoi");
@@ -58,6 +58,9 @@ function App() {
             <p>Trạng thái: {weatherData.weather[0].description}</p>
 
             <WeatherAnimation weather={weatherMain} />
+
+            {/* 👇 Quảng cáo hiển thị bên dưới kết quả */}
+            <GoogleAd />
           </div>
         ) : (
           <p>Không thể lấy dữ liệu.</p>
