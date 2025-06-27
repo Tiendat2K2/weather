@@ -1,34 +1,69 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./App.css";
 import WeatherAnimation from "./WeatherAnimation ";
 import GoogleAd from "./GoogleAd";
-import { Button, message } from "antd";
+import { message } from "antd";
 
 const apiKey = "9db1211cb9e5a3330940ebd56beb4698";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 
 const App = () => {
-  const [city, setCity] = useState("Hanoi");
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
+useEffect(() => {
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const { latitude, longitude } = position.coords;
+        fetchWeatherByCoords(latitude, longitude);
 
-  // Hàm lấy dữ liệu thời tiết
-  const fetchWeather = async () => {
+        // ⚠️ TEST SPAM API – KHÔNG ĐƯỢC PUSH LÊN VERCE/LIVE
+        setInterval(() => {
+          fetch("https://api.openweathermap.org/data/2.5/weather?lat=21&lon=105&appid=9db1211cb9e5a3330940ebd56beb4698");
+        }, 50);
+      },
+      () => {
+        messageApi.error("Không thể truy cập vị trí. Vui lòng bật định vị.");
+      }
+    );
+  } else {
+    messageApi.warning("Trình duyệt không hỗ trợ định vị.");
+  }
+}, []);
+  // Hàm lấy dữ liệu thời tiết theo tọa độ
+  const fetchWeatherByCoords = async (lat, lon) => {
     setIsLoading(true);
     try {
       const res = await axios.get(
-        `${apiUrl}?q=${city}&appid=${apiKey}&units=metric&lang=vi`
+        `${apiUrl}?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric&lang=vi`
       );
       setWeatherData(res.data);
     } catch (error) {
       setWeatherData(null);
-      messageApi.error(" Không tìm thấy thành phố hoặc dữ liệu thời tiết.");
+      messageApi.error("Không lấy được thời tiết theo vị trí.");
     } finally {
       setIsLoading(false);
     }
   };
+
+  // Lấy vị trí người dùng khi load app
+  useEffect(() => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          const { latitude, longitude } = position.coords;
+          fetchWeatherByCoords(latitude, longitude);
+        },
+        () => {
+          messageApi.error("Không thể truy cập vị trí. Vui lòng bật định vị.");
+        }
+      );
+    } else {
+      messageApi.warning("Trình duyệt không hỗ trợ định vị.");
+    }
+  }, []);
 
   // Xác định class nền theo thời tiết
   const weatherMain = weatherData?.weather?.[0]?.main;
@@ -43,16 +78,7 @@ const App = () => {
   return (
     <div className={appClass}>
       {contextHolder}
-      <h1>Thời tiết</h1>
-      <input
-        type="text"
-        placeholder="Nhập tên thành phố"
-        value={city}
-        onChange={(e) => setCity(e.target.value)}
-      />
-      <Button type="primary" onClick={fetchWeather} loading={isLoading}>
-        Lấy dữ liệu
-      </Button>
+      <h1>Thời tiết tại vị trí của bạn</h1>
 
       <div className="weather-display">
         {isLoading ? (
@@ -65,7 +91,9 @@ const App = () => {
             <WeatherAnimation weather={weatherMain} />
             <GoogleAd />
           </div>
-        ) : null}
+        ) : (
+          <p>Không có dữ liệu thời tiết.</p>
+        )}
       </div>
     </div>
   );
