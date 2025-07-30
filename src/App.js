@@ -7,31 +7,11 @@ import { message } from "antd";
 
 const apiKey = "9db1211cb9e5a3330940ebd56beb4698";
 const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
-
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [messageApi, contextHolder] = message.useMessage();
-useEffect(() => {
-  if (navigator.geolocation) {
-    navigator.geolocation.getCurrentPosition(
-      (position) => {
-        const { latitude, longitude } = position.coords;
-        fetchWeatherByCoords(latitude, longitude);
 
-        // ⚠️ TEST SPAM API – KHÔNG ĐƯỢC PUSH LÊN VERCE/LIVE
-        setInterval(() => {
-          fetch("https://api.openweathermap.org/data/2.5/weather?lat=21&lon=105&appid=9db1211cb9e5a3330940ebd56beb4698");
-        }, 50);
-      },
-      () => {
-        messageApi.error("Không thể truy cập vị trí. Vui lòng bật định vị.");
-      }
-    );
-  } else {
-    messageApi.warning("Trình duyệt không hỗ trợ định vị.");
-  }
-}, []);
   // Hàm lấy dữ liệu thời tiết theo tọa độ
   const fetchWeatherByCoords = async (lat, lon) => {
     setIsLoading(true);
@@ -98,5 +78,6 @@ useEffect(() => {
     </div>
   );
 };
+
 
 export default App;
