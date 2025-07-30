@@ -11,7 +11,7 @@ const apiUrl = "https://api.openweathermap.org/data/2.5/weather";
 const App = () => {
   const [weatherData, setWeatherData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
-  const [city, setCity] = useState(""); // Thành phố nhập từ người dùng
+  const [city, setCity] = useState(""); // Người dùng nhập
   const [messageApi, contextHolder] = message.useMessage();
 
   // Hàm gọi API theo tên thành phố
@@ -35,14 +35,14 @@ const App = () => {
     }
   };
 
-  // Hàm gọi API khi nhấn Enter
+  // Gọi khi nhấn Enter
   const handleKeyDown = (e) => {
     if (e.key === "Enter") {
       fetchWeatherByCity();
     }
   };
 
-  // Xác định class nền theo thời tiết
+  // Xác định class nền theo trạng thái thời tiết
   const weatherMain = weatherData?.weather?.[0]?.main;
   let weatherClass = "";
   if (weatherMain === "Clear") weatherClass = "sunny";
@@ -55,13 +55,12 @@ const App = () => {
   return (
     <div className={appClass}>
       {contextHolder}
-      <h1>Dự báo thời tiết</h1>
+      <h1>Xem thời tiết theo thành phố</h1>
 
-      {/* Nhập tên thành phố */}
       <div className="search-box">
         <input
           type="text"
-          placeholder="Nhập tên thành phố (VD: Hanoi)"
+          placeholder="Nhập tên thành phố (ví dụ: Hanoi)"
           value={city}
           onChange={(e) => setCity(e.target.value)}
           onKeyDown={handleKeyDown}
@@ -71,7 +70,7 @@ const App = () => {
 
       <div className="weather-display">
         {isLoading ? (
-          <p>Đang tải...</p>
+          <p>Đang tải dữ liệu...</p>
         ) : weatherData ? (
           <div>
             <h2>{weatherData.name}</h2>
