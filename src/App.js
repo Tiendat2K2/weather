@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import axios from "axios";
 import "./App.css";
-import WeatherAnimation from "./WeatherAnimation";
+import WeatherAnimation from "./WeatherAnimation ";
 import GoogleAd from "./GoogleAd";
 import { message } from "antd";
 
